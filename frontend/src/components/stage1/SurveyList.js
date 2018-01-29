@@ -26,7 +26,7 @@ class SurveyList extends Component {
             </tr>
             </tbody>
           )
-        })
+        });
         this.setState({ surveys: surveys });
       })
   }
