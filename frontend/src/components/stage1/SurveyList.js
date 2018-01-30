@@ -12,18 +12,27 @@ class SurveyList extends Component {
     this.getSurveys();
   }
 
+  handleClick(code) {
+    let codePath = "http://localhost:3000/api/" + code + ".json";
+    fetch(codePath)
+      .then((response) => { return response.json() })
+      .then((surveyData) => {
+        this.props.updateSelectedSurvey(surveyData);
+      })
+  };
+
   getSurveys() {
     let url = 'http://localhost:3000/api/list.json';
     fetch(url)
-      .then((response) => { return response.json()})
+      .then((response) => { return response.json() })
       .then((data) => {
         let surveys = data.map((survey, i) => {
           return(
             <tbody key={i}>
-            <tr>
-              <td>{ survey.name }</td>
-              <td>{ survey.code }</td>
-            </tr>
+              <tr onClick={ () => this.handleClick(survey.code) }>
+                <td>{ survey.name }</td>
+                <td>{ survey.code }</td>
+              </tr>
             </tbody>
           )
         });
@@ -33,17 +42,15 @@ class SurveyList extends Component {
 
   render() {
     return (
-      <div className="container">
-        <table className="table table-bordered">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Code</th>
-          </tr>
-          </thead>
-          { this.state.surveys }
-        </table>
-      </div>
+      <table className="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+        </tr>
+        </thead>
+        { this.state.surveys }
+      </table>
     );
   }
 }
