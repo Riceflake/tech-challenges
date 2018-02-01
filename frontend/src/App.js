@@ -3,8 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import SurveyList from "./components/stage1/SurveyList";
-import DisplayResult from "./components/stage1/DisplayResult";
+import SurveyList from "./components/SurveyList";
+import DisplayResult from "./components/DisplayResult";
 
 
 class App extends Component {
