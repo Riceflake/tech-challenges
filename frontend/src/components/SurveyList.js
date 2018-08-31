@@ -13,7 +13,8 @@ class SurveyList extends Component {
   }
 
   handleClick(code) {
-    let codePath = "http://localhost:3000/api/" + code + ".json";
+    console.log(`${window.location.href}/api/${code}.json`);
+    let codePath = `${window.location.href}/api/${code}.json`;
     fetch(codePath)
       .then((response) => { return response.json() })
       .then((surveyData) => {
@@ -22,7 +23,7 @@ class SurveyList extends Component {
   };
 
   getSurveys() {
-    let url = 'http://localhost:3000/api/list.json';
+    let url = `${window.location.href}/api/list.json`;
     fetch(url)
       .then((response) => { return response.json() })
       .then((data) => {
