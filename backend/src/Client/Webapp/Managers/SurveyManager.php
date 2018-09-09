@@ -27,21 +27,85 @@ class SurveyManager
     function getSurveys()
     {
         $surveys = [];
-        $files = $this->getFiles();
-        foreach ($files as $file) {
-            $survey = (object)array('name' => $file['survey']['name'], 'code' => $file['survey']['code']);
+        foreach ($this->files as $file) {
+            $survey = array('name' => $file['survey']['name'], 'code' => $file['survey']['code']);
             if (!in_array($survey, $surveys)) {
                 array_push($surveys, $survey);
             }
         }
+
         return json_encode($surveys);
     }
 
+    /**
+     * @param $code
+     * @return string
+     */
     public function getSurveysAggregationByCode($code)
     {
+        $qcm = [];
+        $total = 0;
+        $dates = [];
+        $totalFileType = 0;
+        foreach ($this->files as $file) {
+            if ($file['survey']['code'] === $code) {
+                $questions = $file['questions'];
+                $data = $this->extractDataFromSurvey($questions);
 
+                $qcm = array_map(function (...$arrays) {
+                    return array_sum($arrays);
+                }, $qcm, $data['qcm']);
+                
+                $total += $data['numeric'];
+                array_push($dates, $data['date']);
+
+                $totalFileType++;
+            }
+        }
+
+        $result = [];
+        $result['qcm'] = $qcm;
+        $result['average'] = $total / $totalFileType;
+        $result['dates'] = $dates;
+
+        return json_encode($result);
     }
 
+
+    /**
+     * @param array $booleans
+     * @return array
+     */
+    private function convertBooleanArrayToIntegers(array $booleans)
+    {
+        $integers = [];
+        foreach ($booleans as $boolean) {
+            array_push($integers, (int)$boolean);
+        }
+        return $integers;
+    }
+
+    /**
+     * @param array $questions
+     * @return array
+     */
+    private function extractDataFromSurvey(array $questions)
+    {
+        $data = [];
+        foreach ($questions as $question) {
+            $type = $question['type'];
+            $answer = $question['answer'];
+            if ($type === 'qcm') {
+                $data[$type] = $this->convertBooleanArrayToIntegers($answer);
+            } else if ($type === 'numeric') {
+                $data[$type] = $answer;
+            } else if ($type === 'date') {
+                $data[$type] = $answer;
+            }
+        }
+
+        return $data;
+    }
     /**
      * @param string $directory
      * @return string
