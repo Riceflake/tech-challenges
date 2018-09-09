@@ -20,11 +20,11 @@ class SurveyController implements ControllerProviderInterface
         $factory = $app['controllers_factory'];
 
         $factory->get('/surveys', function() use ($app) {
-            return $app['surveys']->getSurveys();
+            return $app->json($app['surveys']->getSurveys());
         });
 
         $factory->get('surveys/{code}', function ($code) use ($app) {
-            return $app['surveys']->getSurveysAggregationByCode($code);
+            return $app->json($app['surveys']->getSurveysAggregationByCode($code));
         });
 
         return $factory;

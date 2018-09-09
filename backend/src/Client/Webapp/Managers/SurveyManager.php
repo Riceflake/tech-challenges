@@ -34,7 +34,7 @@ class SurveyManager
             }
         }
 
-        return json_encode($surveys);
+        return $surveys;
     }
 
     /**
@@ -68,7 +68,7 @@ class SurveyManager
         $result['average'] = $total / $totalFileType;
         $result['dates'] = $dates;
 
-        return json_encode($result);
+        return $result;
     }
 
 
@@ -112,7 +112,7 @@ class SurveyManager
      */
     private function getFiles($directory = 'data/')
     {
-        $filesName = array_diff(scandir($directory), array('..', '.'));
+        $filesName = array_diff(scandir(ROOT_PATH.'/'.$directory), array('..', '.'));
         $decodedFiles = [];
 
         foreach ($filesName as $fileName) {
