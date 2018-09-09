@@ -39,7 +39,7 @@ class SurveyManager
 
     /**
      * @param $code
-     * @return string
+     * @return array
      */
     public function getSurveysAggregationByCode($code)
     {
@@ -106,9 +106,10 @@ class SurveyManager
 
         return $data;
     }
+
     /**
      * @param string $directory
-     * @return string
+     * @return array
      */
     private function getFiles($directory = 'data/')
     {
