@@ -1,0 +1,9 @@
+[build]
+  base = "frontend/"
+  publish = "frontend/build"
+  command = "yarn run build"
+
+[[redirects]]
+  from = "/*"
+  to = "https://react.riceflake.com/"
+  status = 200
